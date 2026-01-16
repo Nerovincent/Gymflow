@@ -1,0 +1,241 @@
+
+<!-- Center the register card vertically and horizontally -->
+<div class="flex justify-center items-center min-h-[80vh]">
+
+  <!-- Card container -->
+  <div class="card w-full max-w-md bg-base-100 shadow-xl">
+    <div class="card-body">
+
+      <!-- Page title -->
+      <h2 class="text-2xl font-bold text-center mb-6">
+        Create Account
+      </h2>
+
+      <!-- Registration form -->
+      <form
+        #registerForm="ngForm"
+        class="w-full space-y-4"
+        (ngSubmit)="onRegister(registerForm)">
+
+        <!-- ================= FULL NAME INPUT ================= -->
+        <div>
+          <label class="label font-medium">Full Name</label>
+
+          <input
+            type="text"
+            class="input input-bordered w-full"
+            placeholder="fullName"
+            [class.input-error]="submitted && fullNameCtrl.invalid"
+            [(ngModel)]="fullName"
+            name="fullName"
+            required
+            #fullNameCtrl="ngModel" />
+
+          <p *ngIf="submitted && fullNameCtrl.invalid"
+            class="text-error text-sm mt-1">
+            Full name is required
+          </p>
+        </div>
+
+
+        <!-- ================= EMAIL INPUT ================= -->
+        <div>
+          <label class="label font-medium">Email</label>
+
+          <input
+            type="email"
+            class="input input-bordered w-full"
+            placeholder="email"
+            [class.input-error]="submitted && emailCtrl.invalid"
+            [(ngModel)]="email"
+            name="email"
+            required
+            email
+            #emailCtrl="ngModel" />
+
+          <p *ngIf="submitted && emailCtrl.errors?.['required']"
+            class="text-error text-sm mt-1">
+            Email is required
+          </p>
+
+          <p *ngIf="submitted && emailCtrl.errors?.['email']"
+            class="text-error text-sm mt-1">
+            Enter a valid email address
+          </p>
+        </div>
+
+
+        <!-- ================= PASSWORD INPUT WITH TOGGLE ================= -->
+        <div class="text-left">
+          <label class="label font-medium">
+            Password:
+          </label>
+
+          <!-- Wrapper to position eye icon inside input -->
+          <div class="relative">
+
+            <!-- Password input -->
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="input input-bordered w-full pr-12"
+              [class.input-error]="submitted && passwordCtrl.invalid"
+              placeholder="••••••••"
+              [(ngModel)]="password"
+              name="password"
+              required
+              minlength="6"
+              #passwordCtrl="ngModel" />
+
+            <!-- Toggle password visibility button -->
+            <button
+              type="button"
+              class="absolute right-3 top-1/2 -translate-y-1/2
+                    text-base-content/60 hover:text-base-content transition"
+              (click)="showPassword = !showPassword">
+
+              <!-- Eye icon (password hidden) -->
+              <svg *ngIf="!showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5
+                    c4.478 0 8.268 2.943 9.542 7
+                    -1.274 4.057-5.064 7-9.542 7
+                    -4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+
+              <!-- Eye-slash icon (password visible) -->
+              <svg *ngIf="showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19
+                    c-4.478 0-8.268-2.943-9.542-7
+                    a9.956 9.956 0 012.223-3.592M6.42 6.42
+                    A9.956 9.956 0 0112 5
+                    c4.478 0 8.268 2.943 9.542 7
+                    a9.956 9.956 0 01-4.043 5.403M15 12
+                    a3 3 0 00-3-3" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3l18 18" />
+              </svg>
+
+            </button>
+          </div>
+
+              <!-- Validation messages -->
+              <p *ngIf="submitted && passwordCtrl.errors?.['required']"
+                class="text-error text-sm mt-1">
+                Password is required
+              </p>
+
+              <p *ngIf="submitted && passwordCtrl.errors?.['minlength']"
+                class="text-error text-sm mt-1">
+                Password must be at least 6 characters
+              </p>
+          </div>
+
+
+        <!-- ================= CONFIRM PASSWORD INPUT WITH TOGGLE ================= -->
+        <div class="text-left">
+          <label class="label font-medium">
+            Confirm Password:
+          </label>
+
+          <!-- Wrapper to position eye icon inside input -->
+          <div class="relative">
+
+            <!-- Confirm password input -->
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              class="input input-bordered w-full pr-12"
+              [class.input-error]="submitted && (confirmPasswordCtrl.invalid || confirmPassword !== password)"
+              placeholder="••••••••"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              required
+              #confirmPasswordCtrl="ngModel" />
+
+            <!-- Toggle confirm password visibility -->
+            <button
+              type="button"
+              class="absolute right-3 top-1/2 -translate-y-1/2
+                    text-base-content/60 hover:text-base-content transition"
+              (click)="showConfirmPassword = !showConfirmPassword">
+
+              <!-- Eye icon (hidden) -->
+              <svg *ngIf="!showConfirmPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5
+                    c4.478 0 8.268 2.943 9.542 7
+                    -1.274 4.057-5.064 7-9.542 7
+                    -4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+
+              <!-- Eye-slash icon (visible) -->
+              <svg *ngIf="showConfirmPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19
+                    c-4.478 0-8.268-2.943-9.542-7
+                    a9.956 9.956 0 012.223-3.592M6.42 6.42
+                    A9.956 9.956 0 0112 5
+                    c4.478 0 8.268 2.943 9.542 7
+                    a9.956 9.956 0 01-4.043 5.403M15 12
+                    a3 3 0 00-3-3" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3l18 18" />
+              </svg>
+
+            </button>
+          </div>
+
+          <!-- Validation messages -->
+          <p *ngIf="submitted && confirmPasswordCtrl.errors?.['required']"
+            class="text-error text-sm mt-1">
+            Confirm password is required
+          </p>
+
+          <p *ngIf="submitted && confirmPassword !== password"
+            class="text-error text-sm mt-1">
+            Passwords do not match
+          </p>
+        </div>
+
+
+        <!-- ================= REGISTER BUTTON ================= -->
+        <button type="submit" class="btn btn-primary w-full mt-4">
+          Register
+        </button>
+
+        <!-- ================= LOGIN REDIRECT LINK ================= -->
+        <p class="text-sm mt-2">
+          Already have an account?
+          <a routerLink="/login" class="link link-primary">
+            Login
+          </a>
+        </p>
+
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="min-h-screen bg-base-200">
+  <!-- Navbar -->
+  <div class="navbar bg-base-100 shadow-md px-6">
+    <div class="flex-1">
+      <a routerLink="/dashboard" class="btn btn-ghost text-xl">
+        GymFlow
+      </a>
+    </div>
+
+    <div class="flex gap-2 items-center">
+
+      <!-- Logged OUT -->
+      <ng-container *ngIf="!isLoggedIn(); else loggedIn">
+        <a routerLink="/login" class="btn btn-sm btn-outline">Login</a>
+        <a routerLink="/register" class="btn btn-sm btn-primary">Register</a>
+      </ng-container>
+
+      <!-- Logged IN -->
+      <ng-template #loggedIn>
+
+        <!-- Admin -->
+        <a *ngIf="hasRole(Roles.Admin)"
+           routerLink="/admin"
+           class="btn btn-sm btn-ghost">
+          Admin
+        </a>
+
+        <!-- Instructor -->
+        <a *ngIf="hasRole(Roles.Instructor)"
+           routerLink="/instructor"
+           class="btn btn-sm btn-ghost">
+          Instructor
+        </a>
+
+        <!-- Client -->
+        <a *ngIf="hasRole(Roles.Client)"
+           routerLink="/client"
+           class="btn btn-sm btn-ghost">
+          Client
+        </a>
+
+        <button class="btn btn-sm btn-error" (click)="logout()">
+          Logout
+        </button>
+
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Routed Pages -->
+  <div class="p-8">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<div class="toast toast-top toast-end">
+  <div *ngFor="let t of toastService.toasts"
+       class="alert"
+       [ngClass]="{
+         'alert-success': t.type === 'success',
+         'alert-error': t.type === 'error',
+         'alert-info': t.type === 'info'
+       }">
+    <span>{{ t.message }}</span>
+  </div>
+</div>
+

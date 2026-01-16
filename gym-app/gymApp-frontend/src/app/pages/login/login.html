@@ -1,0 +1,125 @@
+<!-- Full-screen container to center the login card -->
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+
+  <!-- Login card -->
+  <div class="card w-full max-w-md shadow-xl bg-base-100">
+    <div class="card-body items-center text-center">
+
+      <!-- ================= APP ICON ================= -->
+      <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center mb-2">
+
+        <!-- Dumbbell SVG icon -->
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             class="w-8 h-8 text-primary-content">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 15v-6m16 6v-6M7 12h10M3 9h2v6H3V9zm16 0h2v6h-2V9z" />
+        </svg>
+      </div>
+
+      <!-- ================= APP TITLE ================= -->
+      <h2 class="text-2xl font-bold">
+        GymFlow
+      </h2>
+
+      <!-- Subtitle text -->
+      <p class="text-sm text-base-content/70 mb-4">
+        Welcome back
+      </p>
+
+      <!-- ================= LOGIN FORM ================= -->
+      <form class="w-full space-y-3">
+
+        <!-- ================= EMAIL INPUT ================= -->
+        <div class="text-left">
+          <label class="label font-medium">
+            Email:
+          </label>
+
+          <input
+            type="email"
+            placeholder="email@example.com"  [(ngModel)]="email" name="email"
+            class="input input-bordered w-full" />
+        </div>
+
+        <!-- ================= PASSWORD INPUT WITH TOGGLE ================= -->
+        <div class="text-left">
+          <label class="label font-medium">
+            Password:
+          </label>
+
+          <!-- Wrapper for password field and toggle icon -->
+          <div class="relative">
+
+            <!-- Password input (toggles text / password) -->
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="••••••••" [(ngModel)]="password" name="password"
+              class="input input-bordered w-full pr-12" />
+
+            <!-- Toggle password visibility button -->
+            <button
+              type="button"
+              class="absolute right-3 top-1/2 -translate-y-1/2
+                     text-base-content/60 hover:text-base-content"
+              (click)="showPassword = !showPassword">
+
+              <!-- Eye icon (password hidden) -->
+              <svg *ngIf="!showPassword"
+                   xmlns="http://www.w3.org/2000/svg"
+                   class="w-5 h-5"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5
+                     c4.478 0 8.268 2.943 9.542 7
+                     -1.274 4.057-5.064 7-9.542 7
+                     -4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+
+              <!-- Eye-slash icon (password visible) -->
+              <svg *ngIf="showPassword"
+                   xmlns="http://www.w3.org/2000/svg"
+                   class="w-5 h-5"
+                   fill="none"
+                   viewBox="0 0 24 24"
+                   stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19
+                     c-4.478 0-8.268-2.943-9.542-7
+                     a9.956 9.956 0 012.223-3.592M6.42 6.42
+                     A9.956 9.956 0 0112 5
+                     c4.478 0 8.268 2.943 9.542 7
+                     a9.956 9.956 0 01-4.043 5.403M15 12
+                     a3 3 0 00-3-3" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3l18 18" />
+              </svg>
+
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= LOGIN BUTTON ================= -->
+        <button type="button" class="btn btn-primary w-full mt-4" (click)="onLogin()">
+          Login
+        </button>
+
+        <!-- ================= REGISTER REDIRECT ================= -->
+        <p class="text-sm mt-2">
+          Don’t have an account?
+          <a routerLink="/register" class="link link-primary">
+            Register
+          </a>
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+</div>

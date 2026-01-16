@@ -1,0 +1,101 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-6">Available Trainers</h2>
+
+  <!-- Search Bar -->
+  <div class="mb-6 flex gap-2">
+    <input
+      type="text"
+      [(ngModel)]="searchSpecialty"
+      (keyup.enter)="searchTrainers()"
+      placeholder="Search by specialty (e.g., Yoga, Cardio, Strength)"
+      class="input input-bordered flex-1"
+    />
+    <button
+      (click)="searchTrainers()"
+      class="btn btn-primary"
+    >
+      Search
+    </button>
+    <button
+      *ngIf="searchSpecialty"
+      (click)="clearSearch()"
+      class="btn btn-ghost"
+    >
+      Clear
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-gray-500">
+    Loading trainers...
+  </div>
+
+  <div *ngIf="!loading && trainers.length === 0" class="text-gray-500">
+    No trainers available
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <div
+      *ngFor="let trainer of trainers"
+      class="card bg-base-100 shadow p-5 flex flex-col items-center text-center"
+    >
+
+      <!-- Avatar -->
+      <div
+        class="w-24 h-24 rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-4 overflow-hidden"
+      >
+        <img
+          *ngIf="trainer.profileImageUrl"
+          [src]="apiUrl + trainer.profileImageUrl"
+          class="w-full h-full object-cover"
+        />
+
+        <span *ngIf="!trainer.profileImageUrl">
+          {{ trainer.user.fullName.charAt(0) | uppercase }}
+        </span>
+      </div>
+
+      <!-- Info -->
+      <h3 class="text-lg font-semibold">
+        {{ trainer.user.fullName }}
+      </h3>
+
+      <p class="text-sm text-gray-600">
+        {{ trainer.specialty }}
+      </p>
+
+      <p class="text-xs text-gray-500 mb-2">
+        {{ trainer.user.email }}
+      </p>
+
+      <p class="text-sm italic mb-4">
+        {{ trainer.bio }}
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2">
+        <a
+          [routerLink]="['/client/book', trainer.userId]"
+          class="btn btn-primary btn-sm"
+        >
+          Book Session
+        </a>
+        
+        <a
+          [routerLink]="['/client/chat', trainer.userId]"
+          class="btn btn-secondary btn-sm relative"
+        >
+          Chat
+          <span 
+            *ngIf="getUnreadCount(trainer.userId) > 0"
+            class="badge badge-error absolute -top-2 -right-2"
+          >
+            {{ getUnreadCount(trainer.userId) }}
+          </span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>

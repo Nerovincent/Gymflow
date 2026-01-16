@@ -1,0 +1,117 @@
+<div class="flex flex-col h-screen max-w-4xl mx-auto">
+  
+  <!-- Header -->
+  <div class="bg-base-200 p-4 shadow flex items-center gap-4">
+    <a routerLink="/client/" class="btn btn-ghost btn-sm">
+      ← Back
+    </a>
+    
+    <div *ngIf="trainerInfo" class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center overflow-hidden">
+        <img
+          *ngIf="trainerInfo.profileImageUrl"
+          [src]="apiUrl + trainerInfo.profileImageUrl"
+          class="w-full h-full object-cover"
+        />
+        <span *ngIf="!trainerInfo.profileImageUrl" class="text-xl font-bold">
+          {{ trainerInfo.user.fullName.charAt(0) | uppercase }}
+        </span>
+      </div>
+      <div>
+        <h2 class="text-lg font-bold">{{ trainerInfo.user.fullName }}</h2>
+        <p class="text-sm text-gray-600">{{ trainerInfo.specialty }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div 
+    id="chat-messages" 
+    class="flex-1 overflow-y-auto p-4 bg-base-100"
+  >
+    <div *ngIf="loading" class="text-center text-gray-500 mt-10">
+      Loading messages...
+    </div>
+
+    <div *ngIf="!loading && messages.length === 0" class="text-center text-gray-500 mt-10">
+      No messages yet. Start the conversation!
+    </div>
+
+    <div *ngFor="let msg of messages" class="mb-4">
+      <div 
+        [class]="isMyMessage(msg) ? 'flex justify-end' : 'flex justify-start'"
+      >
+        <div 
+          [class]="isMyMessage(msg) 
+            ? 'bg-primary text-white rounded-lg p-3 max-w-xs' 
+            : 'bg-base-200 rounded-lg p-3 max-w-xs'"
+        >
+          <!-- Text Message -->
+          <p *ngIf="msg.message" class="break-words">{{ msg.message }}</p>
+
+          <!-- Image Message -->
+          <img 
+            *ngIf="msg.imageUrl" 
+            [src]="apiUrl + msg.imageUrl" 
+            class="rounded-lg max-w-full mt-2"
+          />
+
+          <!-- Timestamp -->
+          <p class="text-xs opacity-70 mt-1">
+            {{ msg.sentAt | date:'short' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Preview -->
+  <div *ngIf="imagePreview" class="p-4 bg-base-200 border-t">
+    <div class="flex items-center gap-2">
+      <img [src]="imagePreview" class="w-20 h-20 object-cover rounded" />
+      <button (click)="removeImage()" class="btn btn-sm btn-error">
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="bg-base-200 p-4 border-t">
+    <div class="flex gap-2">
+      <input 
+        type="file" 
+        accept="image/*" 
+        (change)="onImageSelected($event)" 
+        class="hidden" 
+        #fileInput
+      />
+      
+      <button 
+        (click)="fileInput.click()" 
+        class="btn btn-circle btn-ghost"
+        title="Attach image"
+      >
+        📎
+      </button>
+
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        (keyup.enter)="sendMessage()"
+        placeholder="Type a message..."
+        class="input input-bordered flex-1"
+        [disabled]="sending"
+      />
+
+      <button
+        (click)="sendMessage()"
+        [disabled]="(!newMessage.trim() && !selectedImage) || sending"
+        class="btn btn-primary"
+      >
+        <span *ngIf="!sending">Send</span>
+        <span *ngIf="sending" class="loading loading-spinner loading-sm"></span>
+      </button>
+    </div>
+  </div>
+
+</div>

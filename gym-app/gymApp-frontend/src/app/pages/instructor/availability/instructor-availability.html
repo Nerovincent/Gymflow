@@ -1,0 +1,66 @@
+<div class="p-6">
+  <!-- Back Button -->
+  <div class="mb-4">
+    <a 
+      routerLink="/instructor/" 
+      class="btn btn-ghost btn-sm"
+    >
+      ← Back to Dashboard
+    </a>
+  </div>
+
+  <h2 class="text-2xl font-bold mb-6">My Weekly Availability</h2>
+
+  <div class="grid grid-cols-7 gap-4">
+
+    <div *ngFor="let day of days" class="border rounded-lg p-3">
+      <h3 class="font-semibold text-center mb-3">
+        {{ day.label }}
+      </h3>
+
+      <!-- Existing Slots -->
+      <div
+        *ngFor="let slot of getSlotsForDay(day.value)"
+        class="flex items-center justify-between bg-green-100 text-green-800 text-sm rounded p-1 mb-2"
+      >
+        <span>
+          {{ slot.startTime }} – {{ slot.endTime }}
+        </span>
+
+        <!-- Delete Slot -->
+        <button
+          class="text-red-600 font-bold px-2"
+          title="Delete"
+          (click)="deleteSlot(slot.id)"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Add Slot -->
+      <div class="flex flex-col gap-2 mt-2">
+        <input
+          type="time"
+          #start
+          class="border rounded px-2 py-1 text-sm"
+        />
+
+        <input
+          type="time"
+          #end
+          class="border rounded px-2 py-1 text-sm"
+        />
+        <button
+        class="bg-blue-600 hover:bg-blue-700 text-white rounded py-1 text-sm disabled:opacity-50"
+        [disabled]="isSubmitting"
+        (click)="addSlot(day.value, start.value, end.value)"
+        >
+        {{ isSubmitting ? 'Adding...' : 'Add' }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

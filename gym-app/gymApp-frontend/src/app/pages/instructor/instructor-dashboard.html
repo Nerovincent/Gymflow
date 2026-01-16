@@ -1,0 +1,223 @@
+<div class="max-w-5xl mx-auto">
+
+  <h2 class="text-2xl font-bold mb-6">
+    Instructor Dashboard
+  </h2>
+
+  <!-- ================= PROFILE SECTION ================= -->
+  <div class="card bg-base-100 shadow mb-8">
+    <div class="card-body flex items-center gap-6">
+
+      <!-- Avatar -->
+      <div
+        class="w-28 h-28 rounded-full bg-primary text-white flex items-center justify-center text-4xl font-bold overflow-hidden"
+      >
+        <!-- Image if exists -->
+        <img
+            *ngIf="instructor?.profileImageUrl"
+            [src]="apiUrl + instructor.profileImageUrl + '?' + cacheBuster"
+            class="w-full h-full object-cover"
+        />
+
+
+        <!-- Fallback letter -->
+        <span *ngIf="!instructor?.profileImageUrl">
+          {{ instructor?.user?.fullName?.charAt(0) | uppercase }}
+        </span>
+      </div>
+
+      <!-- Info -->
+      <div class="flex-1">
+        <h3 class="text-xl font-bold">
+          {{ instructor?.user?.fullName }}
+        </h3>
+
+        <p class="text-gray-500">
+          {{ instructor?.user?.email }}
+        </p>
+
+        <div class="flex gap-2 mt-3">
+          <button
+            class="btn btn-outline btn-sm"
+            (click)="openEditProfile()"
+          >
+            Edit Profile
+          </button>
+          <br>
+          <a
+            routerLink="/instructor/availability"
+            class="btn btn-primary btn-sm"
+          >
+            Manage Availability
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= CLIENTS SECTION ================= -->
+  <div class="card bg-base-100 shadow mb-8">
+    <div class="card-body">
+
+      <h3 class="card-title mb-4">My Clients</h3>
+
+      <!-- Loading clients -->
+      <div *ngIf="loadingClients" class="text-center">
+        <span class="loading loading-spinner loading-md"></span>
+      </div>
+
+      <!-- No clients -->
+      <div *ngIf="!loadingClients && clients.length === 0"
+           class="alert alert-info">
+        No clients assigned yet.
+      </div>
+
+      <!-- Clients table -->
+      <div *ngIf="!loadingClients && clients.length > 0"
+           class="overflow-x-auto">
+
+        <table class="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let client of clients">
+              <td>{{ client.fullName }}</td>
+              <td>{{ client.email }}</td>
+              <td>
+                <span class="badge badge-success">Active</span>
+              </td>
+              <td>
+                <a
+                  [routerLink]="['/instructor/chat', client.id]"
+                  class="btn btn-secondary btn-sm relative"
+                >
+                  Chat
+                  <span 
+                    *ngIf="getUnreadCount(client.id) > 0"
+                    class="badge badge-error absolute -top-2 -right-2"
+                  >
+                    {{ getUnreadCount(client.id) }}
+                  </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BOOKINGS SECTION ================= -->
+  <div class="card bg-base-100 shadow">
+    <div class="card-body">
+
+      <h3 class="card-title mb-4">My Bookings</h3>
+
+      <!-- Loading bookings -->
+      <div *ngIf="loadingBookings" class="text-center">
+        <span class="loading loading-spinner loading-md"></span>
+      </div>
+
+      <!-- No bookings -->
+      <div *ngIf="!loadingBookings && bookings.length === 0"
+           class="alert alert-info">
+        No bookings yet.
+      </div>
+
+      <!-- Bookings table -->
+      <div *ngIf="!loadingBookings && bookings.length > 0"
+           class="overflow-x-auto">
+
+        <table class="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Email</th>
+              <th>Start</th>
+              <th>End</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let booking of bookings">
+              <td>{{ booking.clientName }}</td>
+              <td>{{ booking.clientEmail }}</td>
+              <td>{{ booking.startDateTime | date:'yyyy-MM-dd HH:mm' }}</td>
+              <td>{{ booking.endDateTime | date:'yyyy-MM-dd HH:mm' }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-error"
+                  (click)="cancelBooking(booking.id)">
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ================= EDIT PROFILE MODAL ================= -->
+<div *ngIf="showEditProfile" class="modal modal-open">
+  <div class="modal-box">
+
+    <h3 class="font-bold text-lg mb-4">Edit Profile</h3>
+
+    <!-- Image upload -->
+    <input
+      type="file"
+      accept="image/*"
+      class="file-input file-input-bordered w-full"
+      (change)="onImageSelected($event)"
+    />
+
+    <input
+        type="text"
+        class="input input-bordered w-full mb-2"
+        placeholder="Full name"
+        [(ngModel)]="editProfile.fullName"
+    />
+
+    <input
+        type="text"
+        class="input input-bordered w-full mb-2"
+        placeholder="Specialty"
+        [(ngModel)]="editProfile.specialty"
+    />
+
+    <textarea
+        class="textarea textarea-bordered w-full mb-4"
+        placeholder="Bio"
+        [(ngModel)]="editProfile.bio">
+    </textarea>
+
+
+    <div class="modal-action">
+      <button
+        class="btn btn-outline"
+        (click)="closeEditProfile()">
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-primary"
+        (click)="saveProfile()">
+        Save
+      </button>
+    </div>
+
+  </div>
+</div>

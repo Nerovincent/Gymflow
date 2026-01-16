@@ -1,0 +1,47 @@
+<div class="max-w-5xl mx-auto">
+  <h2 class="text-2xl font-bold mb-6">Admin – User Management</h2>
+
+  <div *ngIf="loading" class="loading loading-spinner loading-lg"></div>
+
+  <div *ngIf="!loading" class="overflow-x-auto">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Roles</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.email }}</td>
+
+          <td>
+            <span
+              *ngFor="let role of user.roles"
+              class="badge badge-outline mr-1">
+              {{ role }}
+            </span>
+          </td>
+
+          <td>
+            <button
+              class="btn btn-sm btn-primary mr-2"
+              [disabled]="!isClient(user)"
+              (click)="promote(user)">
+              Promote to Instructor
+            </button>
+
+            <button
+              class="btn btn-sm btn-error"
+              [disabled]="isAdmin(user)"
+              (click)="deleteUser(user)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
