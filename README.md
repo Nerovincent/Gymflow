@@ -70,11 +70,12 @@ This project demonstrates **real-world full-stack development**, secure API desi
 
 ### 💬 Chat
 
-* One-to-one messaging (Client ↔ Instructor)
-* Unread message count per user
+* One-to-one messaging between Client and Instructor
+* Real-time message delivery using SignalR
+* Messages persisted via REST API and Entity Framework Core
+* Unread message count per user with read receipts
 * Notification badge for unread messages
 * Supports text and image messages
-* REST-based (ready for SignalR upgrade)
 
 ---
 
@@ -153,8 +154,8 @@ GymFlow/
 
 ## 🔮 Future Improvements
 
-* Real-time chat using SignalR
 * Calendar-based booking UI
+* Maps to get instructor near selected location
 * Admin analytics dashboard
 * Email notifications
 * Payment integration
