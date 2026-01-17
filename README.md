@@ -16,11 +16,11 @@ This project demonstrates **real-world full-stack development**, secure API desi
 
 ### Booking & Availability
 
-![Booking Slots](./screenshots/booking-slots.png)
+![Booking Slots](./screenshots/Booking-ui.png)
 
 ### Instructor Dashboard
 
-![Instructor Dashboard](./screenshots/instructor-dashboard.png)
+![Instructor Dashboard](./screenshots/Instructor-dashboard.png)
 
 ### Chat System
 
